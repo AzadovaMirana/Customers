@@ -1,0 +1,6 @@
+---Kredit kartı olub lakin istifadə etməyən müştərilərin siyahısını tərtib edin.
+    
+select distinct a.customer_code
+from product a
+join product b on a.customer_code = b.customer_code
+where a.product_name = 'Credit Card' and b.credit_usage = 0;

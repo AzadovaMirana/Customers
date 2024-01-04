@@ -1,0 +1,11 @@
+---Hesabını bağlamış müştərilərin tranzaksiya sayı və məbləğini göstərən cədvəl hazırlayın.
+
+   
+select customer_code, sum(transaction_amount) as tranzaksiya_meblegi, count(transaction_amount) as tranzaksiya_sayi
+from (
+    select transactions.customer_code, transactions.transaction_amount, product.account_closed_date
+    from transactions
+    join product on transactions.customer_code = product.customer_code)
+where account_closed_date is not null
+group by customer_code;
+   

@@ -1,0 +1,10 @@
+--- Müştərinin hesab acıldığı tarixdən neçə gün sonra sonra ilk əməliyyat edir?
+--- Müştəri kodu, hesabın açıldığı tarix,ilk əməliyyat tarixi,günlərin sayı əks olunan cədvəl tərtib edin.
+ 
+
+select a.customer_code,b.account_opened_date,a.operation_date,
+to_date(a.operation_date, 'DD Mon, YYYY, HH24:MI') - to_date(b.account_opened_date, 'DD Mon, YYYY, HH24:MI') AS gunlerin_sayi
+from transactions a 
+join product b
+on a.customer_code = b.customer_code;  
+    

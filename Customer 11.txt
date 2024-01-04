@@ -1,0 +1,13 @@
+---Hər ayın ilk günü( məs:01-sep-2023)  üçün bir əvvəlki ayın cash_out_commision məbləğini hesablayın.
+
+---cash_out_comission tam qiymet cixarmasi ucun SUM qarsisina Trunc yazmaq olar
+
+SELECT
+last_day(TO_CHAR(TRUNC(TO_DATE(operation_date, 'DD-MON, YYYY, HH24:MI'), 'MON')))+1 as ayin_ilk_gunu,
+  last_day(TO_CHAR(TRUNC(TO_DATE(operation_date, 'DD-MON, YYYY, HH24:MI'), 'MON'), 'DD-MON YYYY')) AS evvelki_ayin_sonu,
+  SUM(cash_out_comission) AS ayin_cash_out_comission
+FROM transactions
+GROUP BY last_day(TO_CHAR(TRUNC(TO_DATE(operation_date, 'DD-MON, YYYY, HH24:MI'), 'MON'), 'DD-MON YYYY')),
+last_day(TO_CHAR(TRUNC(TO_DATE(operation_date, 'DD-MON, YYYY, HH24:MI'), 'MON')))+1
+ORDER BY evvelki_ayin_sonu asc;
+

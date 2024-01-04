@@ -1,0 +1,22 @@
+---Son 6 ayda artan tranzaksiya məbləği olan müştərilərin siyahısını tərtib edin
+
+WITH current_period AS (
+  SELECT customer_code, SUM(transaction_amount) AS son_6ayin_tranzaksiya_meblegi
+  FROM transactions
+  WHERE (TO_CHAR(TRUNC(TO_DATE(operation_date, 'DD-MON, YYYY, HH24:MI'))) >= ADD_MONTHS(TRUNC(SYSDATE, 'MM'), -6))
+  GROUP BY customer_code
+),
+previous_period AS (
+  SELECT customer_code, SUM(transaction_amount) AS evvelki_6ayin_tranzaksiya_meblegi
+  FROM transactions
+  WHERE (TO_CHAR(TRUNC(TO_DATE(operation_date, 'DD-MON, YYYY, HH24:MI'))) >=
+  ADD_MONTHS(TRUNC(SYSDATE, 'MM'), -12) AND (TO_CHAR(TRUNC(TO_DATE(operation_date, 'DD-MON, YYYY, HH24:MI'))) <
+  ADD_MONTHS(TRUNC(SYSDATE, 'MM'), -6)))
+  GROUP BY customer_code
+)
+SELECT c.customer_code, 
+       c.son_6ayin_tranzaksiya_meblegi,
+       p.evvelki_6ayin_tranzaksiya_meblegi
+FROM current_period c
+JOIN previous_period p ON c.customer_code = p.customer_code
+WHERE c.son_6ayin_tranzaksiya_meblegi > p.evvelki_6ayin_tranzaksiya_meblegi;
